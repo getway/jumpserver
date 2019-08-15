@@ -1,0 +1,130 @@
+{% extends '_base_list.html' %}
+{% load i18n static %}
+
+{% block help_message %}
+{% endblock %}
+
+{% block table_search %}
+    <div class="html5buttons">
+        <div class="dt-buttons btn-group">
+            <a class="btn btn-default btn_import" data-toggle="modal" data-target="#project_import_modal" tabindex="0">
+                <span>{% trans "Import" %}</span>
+            </a>
+            <a class="btn btn-default btn_export" tabindex="0">
+                <span>{% trans "Export" %}</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block table_container %}
+<div class="uc pull-left m-r-5">
+    <a href="{% url "assets:project-create" %}" class="btn btn-sm btn-primary"> {% trans "Create project" %} </a>
+</div>
+<table class="table table-striped table-bordered table-hover " id="project_list_table" >
+    <thead>
+    <tr>
+        <th class="text-center">
+            <input type="checkbox" id="check_all" class="ipt_check_all" >
+        </th>
+        <th class="text-center">{% trans 'Name' %}</th>
+        <th class="text-center">{% trans 'Type' %}</th>
+        <th class="text-center">{% trans 'Domain Name' %}</th>
+        <th class="text-center">{% trans 'Port' %}</th>
+        <th class="text-center">{% trans 'Comment' %}</th>
+        <th class="text-center">{% trans 'Action' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+{% include "assets/_project_import_modal.html" %}
+{% endblock %}
+{% block content_bottom_left %}{% endblock %}
+{% block custom_foot_js %}
+<script src="{% static 'js/jquery.form.min.js' %}"></script>
+<script>
+function initTable() {
+    var options = {
+        ele: $('#project_list_table'),
+        columnDefs: [
+            {targets: 1, createdCell: function (td, cellData, rowData) {
+                var detail_btn = '<a href="{% url "assets:project-detail" pk=DEFAULT_PK %}">' + cellData + '</a>';
+                $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', rowData.id));
+             }},
+            {targets: 6, createdCell: function (td, cellData, rowData) {
+                var update_btn = '<a href="{% url "assets:project-update" pk=DEFAULT_PK %}" class="btn btn-xs btn-info">{% trans "Update" %}</a>'.replace('{{ DEFAULT_PK }}', cellData);
+                var del_btn = '<a class="btn btn-xs btn-danger m-l-xs btn-delete" data-uid="{{ DEFAULT_PK }}">{% trans "Delete" %}</a>'.replace('{{ DEFAULT_PK }}', cellData);
+                $(td).html(update_btn + del_btn)
+             }}
+        ],
+        ajax_url: '{% url "api-assets:project-list" %}',
+        columns: [
+            {data: "id"}, {data: "name" }, {data: "type" },
+            {data: "domain_name" }, {data: "port" }, {data: "comment" }, {data: "id"}
+        ],
+        op_html: $('#actions').html()
+    };
+    var table = jumpserver.initServerSideDataTable(options);
+    return table;
+}
+$(document).ready(function(){
+    var table = initTable();
+
+    $('.btn_export').click(function () {
+        var projects = [];
+        var rows = table.rows('.selected').data();
+        if(rows.length===0){
+            rows = table.rows().data();
+        }
+        $.each(rows, function (index, obj) {
+            projects.push(obj.id)
+        });
+        $.ajax({
+            url: "{% url 'assets:project-export' %}",
+            method: 'POST',
+            data: JSON.stringify({projects_id: projects}),
+            dataType: "json",
+            success: function (data, textStatus) {
+                window.open(data.redirect)
+            },
+            error: function () {
+                toastr.error('Export failed');
+            }
+        })
+    });
+
+    $('#btn_project_import').click(function() {
+        var $form = $('#fm_project_import');
+        $form.find('.help-block').remove();
+        function success (data) {
+            if (data.valid === false) {
+                $('<span />', {class: 'help-block text-danger'}).html(data.msg).insertAfter($('#id_projects'));
+            } else {
+                $('#id_created').html(data.created_info);
+                $('#id_created_detail').html(data.created.join(', '));
+                $('#id_updated').html(data.updated_info);
+                $('#id_updated_detail').html(data.updated.join(', '));
+                $('#id_failed').html(data.failed_info);
+                $('#id_failed_detail').html(data.failed.join(', '));
+                var $data_table = $('#project_list_table').DataTable();
+                $data_table.ajax.reload();
+            }
+        }
+        $form.ajaxSubmit({success: success});
+    })
+})
+
+.on('click', '.btn-delete', function () {
+    var $this = $(this);
+    var $data_table = $('#project_list_table').DataTable();
+    var name = $(this).closest("tr").find(":nth-child(2)").children('a').html();
+    var uid = $this.data('uid');
+    var the_url = '{% url "api-assets:project-detail" pk=DEFAULT_PK %}'.replace('{{ DEFAULT_PK }}', uid);
+    objectDelete($this, name, the_url);
+    setTimeout( function () {
+        $data_table.ajax.reload();
+    }, 3000);
+});
+</script>
+{% endblock %}

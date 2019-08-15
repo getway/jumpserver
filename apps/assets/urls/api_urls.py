@@ -18,6 +18,8 @@ router.register(r'domain', api.DomainViewSet, 'domain')
 router.register(r'gateway', api.GatewayViewSet, 'gateway')
 router.register(r'cmd-filter', api.CommandFilterViewSet, 'cmd-filter')
 router.register(r'asset-user', api.AssetUserViewSet, 'asset-user')
+router.register(r'projects', api.ProjectViewSet, 'project')
+router.register(r'projects-assets', api.ProjectAssetsViewSet, 'project-assets-view')
 
 cmd_filter_router = routers.NestedDefaultRouter(router, r'cmd-filter', lookup='filter')
 cmd_filter_router.register(r'rules', api.CommandFilterRuleViewSet, 'cmd-filter-rule')
@@ -91,6 +93,12 @@ urlpatterns = [
     path('gateway/<uuid:pk>/test-connective/',
          api.GatewayTestConnectionApi.as_view(), name='test-gateway-connective'),
 
+    path(r'assets/<uuid:pk>/projects/',
+         api.AssetUpdateProjectApi.as_view(), name='asset-update-project'),
+    path(r'projects/<uuid:pk>/assets/',
+         api.ProjectUpdateApi.as_view(), name='project-update-assets'),
+    path('project/<uuid:pk>/assets/',
+         api.ProjectAssetsListView.as_view(), name='project-assets'),
 ]
 
 urlpatterns += router.urls + cmd_filter_router.urls

@@ -120,7 +120,7 @@ class Config(dict):
         d = types.ModuleType('config')
         d.__file__ = filename
         try:
-            with open(filename, mode='rb') as config_file:
+            with open(filename, mode='rb', encoding='utf8') as config_file:
                 exec(compile(config_file.read(), filename, 'exec'), d.__dict__)
         except IOError as e:
             if silent and e.errno in (errno.ENOENT, errno.EISDIR):
@@ -180,7 +180,7 @@ class Config(dict):
         if self.root_path:
             filename = os.path.join(self.root_path, filename)
         try:
-            with open(filename) as json_file:
+            with open(filename, encoding='utf8') as json_file:
                 obj = json.loads(json_file.read())
         except IOError as e:
             if silent and e.errno in (errno.ENOENT, errno.EISDIR):

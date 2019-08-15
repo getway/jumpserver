@@ -69,6 +69,10 @@
                                             <td><b>{{ asset.public_ip|default:"" }}</b></td>
                                         </tr>
                                         <tr>
+                                            <td>{% trans 'Environment' %}:</td>
+                                            <td><b>{{ asset.environment }}</b></td>
+                                        </tr>
+                                        <tr>
                                             <td>{% trans 'Port' %}:</td>
                                             <td><b>{{ asset.port }}</b></td>
                                         </tr>
@@ -189,6 +193,43 @@
                                 </div>
                             </div>
 
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <i class="fa fa-info-circle"></i> {% trans 'project' %}
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table group_edit" id="add-asset2project">
+                                        <tbody>
+                                        <form>
+                                            <tr>
+                                                <td colspan="2" class="no-borders">
+                                                    <select data-placeholder="{% trans 'Join asset projects' %}" id="projects_selected" class="select2 projects" style="width: 100%" multiple="" tabindex="4">
+                                                        {% for project in projects_remain %}
+                                                        <option value="{{ project.id }}" id="opt_{{ project.id }}" >{{ project.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="no-borders">
+                                                    <button type="button" class="btn btn-info btn-sm" id="btn_add_project">{% trans 'Confirm' %}</button>
+                                                </td>
+                                            </tr>
+                                        </form>
+
+                                        {% for project in projects %}
+                                        <tr>
+                                          <td ><b class="bdg_group" data-pid={{ project.id }}>{{ project.name }}</b></td>
+                                          <td>
+                                              <button class="btn btn-danger pull-right btn-xs btn_leave_project" type="button"><i class="fa fa-minus"></i></button>
+                                          </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <i class="fa fa-info-circle"></i> {% trans 'Nodes' %}
@@ -249,6 +290,8 @@
 {% block custom_foot_js %}
 <script>
 jumpserver.nodes_selected = {};
+jumpserver.projects_selected = {};
+
 function updateAssetNodes(nodes) {
     var the_url = "{% url 'api-assets:asset-detail' pk=asset.id %}";
     var body = {
@@ -270,6 +313,33 @@ function updateAssetNodes(nodes) {
         });
         // clear jumpserver.groups_selected
         jumpserver.nodes_selected = {};
+    };
+    APIUpdateAttr({
+        url: the_url,
+        body: JSON.stringify(body),
+        success: success
+    });
+}
+
+function updateProjects(projects) {
+    var the_url = "{% url 'api-assets:asset-update-project' pk=asset.id %}";
+    var body = {
+        projects: Object.assign([], projects)
+    };
+    var success = function(data) {
+        $('.select2-selection__rendered').empty();
+        $('#projects_selected').val('');
+        $.map(jumpserver.projects_selected, function(name, index) {
+            $('#opt_' + index).remove();
+            $('#add-asset2project tbody').append(
+                '<tr>' +
+                '<td><b class="bdg_group" data-pid="' + index + '">' + name + '</b></td>' +
+                '<td><button class="btn btn-danger btn-xs pull-right btn_leave_project" type="button"><i class="fa fa-minus"></i></button></td>' +
+                '</tr>'
+            )
+        });
+        // clear jumpserver.projects_selected
+        jumpserver.projects_selected = {};
     };
     APIUpdateAttr({
         url: the_url,
@@ -302,6 +372,13 @@ $(document).ready(function () {
         var data = evt.params.data;
         delete jumpserver.nodes_selected[data.id]
     });
+     $('.select2.projects').select2().on('select2:select', function(evt) {
+        var data = evt.params.data;
+        jumpserver.projects_selected[data.id] = data.text;
+    }).on('select2:unselect', function(evt) {
+        var data = evt.params.data;
+        delete jumpserver.projects_selected[data.id]
+    });
 }).on('click', '#is_active', function () {
     var the_url = '{% url "api-assets:asset-detail" pk=asset.id %}';
     var checked = $(this).prop('checked');
@@ -320,6 +397,33 @@ $(document).ready(function () {
     }else{
         $(".ibox-content > table > tbody > tr:nth-child(13) > td:last >b").html('False');
     }
+
+    }).on('click', '#btn_add_project', function () {
+    if (Object.keys(jumpserver.projects_selected).length === 0) {
+       return false;
+    }
+    var projects = $('.bdg_group').map(function() {
+        return $(this).data('pid');
+    }).get();
+    $.map(jumpserver.projects_selected, function(value, index) {
+        projects.push(index);
+        $('#opt_' + index).remove();
+    });
+    updateProjects(projects)
+}).on('click', '.btn_leave_project', function() {
+    var $this = $(this);
+    var $tr = $this.closest('tr');
+    var $badge = $tr.find('.bdg_group');
+    var pid = $badge.data('pid');
+    var project_name = $badge.html() || $badge.text();
+    $('#projects_selected').append(
+        '<option value="' + pid + '" id="opt_' + pid + '">' + project_name + '</option>'
+    );
+    $tr.remove();
+    var projects = $('.bdg_group').map(function () {
+        return $(this).data('pid');
+    }).get();
+    updateProjects(projects)
 }).on('click', '#btn-update-nodes', function () {
     if (Object.keys(jumpserver.nodes_selected).length === 0) {
        return false;

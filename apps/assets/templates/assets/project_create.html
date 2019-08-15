@@ -1,0 +1,71 @@
+{% extends '_base_create_update.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load asset_tags %}
+{% load common_tags %}
+
+{% block form %}
+    <form action="" method="post" class="form-horizontal">
+    {% if form.non_field_errors %}
+         <div class="alert alert-danger">
+             {{ form.non_field_errors }}
+         </div>
+    {% endif %}
+    {% csrf_token %}
+    <h3>{% trans 'Basic' %}</h3>
+    {% bootstrap_field form.name layout="horizontal" %}
+    {% bootstrap_field form.type layout="horizontal" %}
+    {% bootstrap_field form.port layout="horizontal" %}
+    {% bootstrap_field form.level layout="horizontal" %}
+    {% bootstrap_field form.domain_name layout="horizontal" %}
+    {% bootstrap_field form.git_address layout="horizontal" %}
+
+    <div class="hr-line-dashed"></div>
+    <h3>{% trans 'Users' %}</h3>
+    {% bootstrap_field form.scrum_master layout="horizontal" %}
+    {% bootstrap_field form.dev_users layout="horizontal" %}
+    {% bootstrap_field form.sa_users layout="horizontal" %}
+
+    <div class="hr-line-dashed"></div>
+    <h3>{% trans 'Parent' %}</h3>
+    {% bootstrap_field form.parent layout="horizontal" %}
+
+    <div class="hr-line-dashed"></div>
+    <h3>{% trans 'Other' %}</h3>
+    {% bootstrap_field form.comment layout="horizontal" %}
+
+    <div class="hr-line-dashed"></div>
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-2">
+            <button class="btn btn-default" type="reset"> {% trans 'Reset' %}</button>
+            <button id="submit_button" class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
+        </div>
+    </div>
+    </form>
+{% endblock %}
+
+{% block custom_foot_js %}
+<script>
+function format(item) {
+   var group = item.element.parentElement.label;
+   return group + ':' + item.text;
+}
+
+$(document).ready(function () {
+    $('.select2').select2({
+        allowClear: true,
+        maximumSelectionLength: 5,
+    });
+    $('#id_sa_users.select2').select2({
+        closeOnSelect: false,
+        maximumSelectionLength: 5,
+    });
+    $('#id_dev_users.select2').select2({
+        closeOnSelect: false,
+        maximumSelectionLength: 2,
+    });
+
+})
+</script>
+{% endblock %}

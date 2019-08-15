@@ -154,7 +154,7 @@ class CeleryTaskFileHandler(CeleryTaskLoggerHandler):
 
     def handle_task_start(self, task_id):
         log_path = get_celery_task_log_path(task_id)
-        self.f = open(log_path, 'a')
+        self.f = open(log_path, 'a', encoding='utf8')
 
     def handle_task_end(self, task_id):
         self.f and self.f.close()

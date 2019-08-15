@@ -59,4 +59,14 @@ urlpatterns = [
     path('cmd-filter/<uuid:pk>/rule/', views.CommandFilterRuleListView.as_view(), name='cmd-filter-rule-list'),
     path('cmd-filter/<uuid:filter_pk>/rule/create/', views.CommandFilterRuleCreateView.as_view(), name='cmd-filter-rule-create'),
     path('cmd-filter/<uuid:filter_pk>/rule/<uuid:pk>/update/', views.CommandFilterRuleUpdateView.as_view(), name='cmd-filter-rule-update'),
+
+    # Resource project url
+    path('project/', views.ProjectListView.as_view(), name='project-list'),
+    path('project/create/', views.ProjectCreateView.as_view(), name='project-create'),
+    path('project/<uuid:pk>/', views.ProjectDetailView.as_view(), name='project-detail'),
+    path('project/<uuid:pk>/update/', views.ProjectUpdateView.as_view(), name='project-update'),
+    path('project/<uuid:pk>/delete/', views.ProjectDeleteView.as_view(), name='project-delete'),
+    path('project/export/', views.ProjectExportView.as_view(), name='project-export'),
+    path('project/import/', views.ProjectBulkImportView.as_view(), name='project-import'),
+    path('project/<uuid:pk>/assets/', views.ProjectAssetsView.as_view(), name='project-assets'),
 ]

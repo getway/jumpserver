@@ -31,7 +31,7 @@ from common.const import create_success_msg, update_success_msg
 from ..const import CACHE_KEY_ASSET_BULK_UPDATE_ID_PREFIX
 from orgs.utils import current_org
 from .. import forms
-from ..models import Asset, AdminUser, SystemUser, Label, Node, Domain
+from ..models import Asset, AdminUser, SystemUser, Label, Node, Domain, Project
 
 
 __all__ = [
@@ -182,10 +182,14 @@ class AssetDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         nodes_remain = Node.objects.exclude(assets=self.object)
+        projects = self.object.projects.all()
         context = {
             'app': _('Assets'),
             'action': _('Asset detail'),
             'nodes_remain': nodes_remain,
+            'projects_remain': [project for project in Project.objects.all()
+                                if project not in projects],
+            'projects': projects,
         }
         kwargs.update(context)
         return super().get_context_data(**kwargs)

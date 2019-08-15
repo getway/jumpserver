@@ -15,10 +15,29 @@ from django.core.cache import cache
 
 from .user import AdminUser, SystemUser
 from orgs.mixins import OrgModelMixin, OrgManager
+from .project import Project
 
 __all__ = ['Asset']
 logger = logging.getLogger(__name__)
 
+# Important
+PLATFORM_CHOICES = (
+        ('Linux', 'Linux'),
+        ('Unix', 'Unix'),
+        ('MacOS', 'MacOS'),
+        ('BSD', 'BSD'),
+        ('Windows', 'Windows'),
+        ('Windows2016', 'Windows(2016)'),
+        ('Other', 'Other'),
+)
+ENV_CHOICES = (
+    ('DEV', 'dev'),
+    ('TEST', 'test'),
+    ('DEMO', 'demo'),
+    ('TDEMO', 'tdemo'),
+    ('PROD', 'prod'),
+    ('Other', 'other'),
+)
 
 def default_cluster():
     from .cluster import Cluster
@@ -49,15 +68,8 @@ class AssetQuerySet(models.QuerySet):
 
 class Asset(OrgModelMixin):
     # Important
-    PLATFORM_CHOICES = (
-        ('Linux', 'Linux'),
-        ('Unix', 'Unix'),
-        ('MacOS', 'MacOS'),
-        ('BSD', 'BSD'),
-        ('Windows', 'Windows'),
-        ('Windows2016', 'Windows(2016)'),
-        ('Other', 'Other'),
-    )
+    PLATFORM_CHOICES = PLATFORM_CHOICES
+    ENV_CHOICES = ENV_CHOICES
 
     PROTOCOL_SSH = 'ssh'
     PROTOCOL_RDP = 'rdp'
@@ -118,6 +130,13 @@ class Asset(OrgModelMixin):
         (REACHABLE, _('Reachable')),
         (UNKNOWN, _("Unknown")),
     )
+    environment = models.CharField(max_length=32, choices=ENV_CHOICES, default='DEV', verbose_name=_('Environment'))
+    # Project
+    projects = models.ManyToManyField(Project, blank=True, verbose_name=_('Projects'), related_name='assets', )
+
+    @property
+    def projects_amount(self):
+        return len(self.projects.all())
 
     def __str__(self):
         return '{0.hostname}({0.ip})'.format(self)

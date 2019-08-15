@@ -83,4 +83,4 @@ class MyAssetGrantedSerializer(AssetGrantedSerializer):
 class AssetSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asset
-        fields = ['id', 'hostname', 'port', 'ip', 'connectivity']
+        fields = ['id', 'hostname', 'port', 'ip', 'connectivity', 'environment', 'hardware_info']
