@@ -20,7 +20,7 @@ from common.mixins import IDInFilterMixin
 from common.utils import get_logger
 from common.permissions import IsOrgAdmin, IsOrgAdminOrAppUser
 from ..const import CACHE_KEY_ASSET_BULK_UPDATE_ID_PREFIX
-from ..models import Asset, AdminUser, Node
+from ..models import Asset, AdminUser, Node, Project
 from .. import serializers
 from ..tasks import update_asset_hardware_info_manual, \
     test_asset_connectivity_manual
@@ -39,13 +39,22 @@ class AssetViewSet(IDInFilterMixin, LabelFilter, BulkModelViewSet):
     """
     API endpoint that allows Asset to be viewed or edited.
     """
-    filter_fields = ("hostname", "ip")
-    search_fields = filter_fields
-    ordering_fields = ("hostname", "ip", "port", "cpu_cores")
+    # filter_fields = ("hostname", "ip", "port")
+    # search_fields = filter_fields
+    ordering_fields = ("hostname", "ip", "port", "environment")
     queryset = Asset.objects.all()
     serializer_class = serializers.AssetSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = (IsOrgAdminOrAppUser,)
+
+    def filter_search(self, queryset):
+        show_current_asset = self.request.query_params.get("show_current_asset") in ('1', 'true')
+        search = self.request.query_params.get("search")
+        if show_current_asset:
+            queryset = queryset.filter(
+                Q(hostname__icontains=search) | Q(ip__icontains=search)
+            )
+        return queryset
 
     def filter_node(self, queryset):
         node_id = self.request.query_params.get("node_id")
@@ -77,10 +86,54 @@ class AssetViewSet(IDInFilterMixin, LabelFilter, BulkModelViewSet):
         queryset = queryset.filter(admin_user=admin_user)
         return queryset
 
+    def filter_environment(self, queryset):
+        environment = self.request.query_params.get('environment')
+        if not environment:
+            return queryset
+        queryset = queryset.filter(environment=str(environment).upper())
+        return queryset
+
+    def filter_project(self, queryset):
+        param = self.request.query_params.get('project')
+        if not param:
+            return queryset
+        project = get_object_or_404(Project, name=param)
+        queryset = queryset.filter(projects__in=[project, ])
+        return queryset
+
+    def filter_domain_name(self, queryset):
+        param = self.request.query_params.get('domain_name')
+        if not param:
+            return queryset
+        project = get_object_or_404(Project, domain_name=param)
+        queryset = queryset.filter(projects__in=[project, ])
+        return queryset
+
+    def filter_hostname(self, queryset):
+        param = self.request.query_params.get('hostname')
+        if not param:
+            return queryset
+        queryset = queryset.filter(hostname__icontains=param)
+        return queryset
+
+    def filter_ip(self, queryset):
+        param = self.request.query_params.get('ip')
+        if not param:
+            return queryset
+        queryset = queryset.filter(ip__icontains=param)
+        return queryset
+
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
         queryset = self.filter_node(queryset)
         queryset = self.filter_admin_user_id(queryset)
+        queryset = self.filter_environment(queryset)
+        queryset = self.filter_hostname(queryset)
+        queryset = self.filter_project(queryset)
+        queryset = self.filter_domain_name(queryset)
+        queryset = self.filter_ip(queryset)
+        queryset = self.filter_search(queryset)
+
         return queryset
 
     def get_queryset(self):

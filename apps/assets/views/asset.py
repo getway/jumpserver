@@ -47,11 +47,19 @@ class AssetListView(AdminUserRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         Node.root()
+        projects_list = [{"id": str(project.name), "text": project.name} for project in
+                         Project.objects.all().order_by('name')]
+        domain_name_list = [{"id": str(project.domain_name), "text": project.domain_name} for project in
+                            Project.objects.all().order_by('domain_name')]
         context = {
             'app': _('Assets'),
             'action': _('Asset list'),
             'labels': Label.objects.all().order_by('name'),
             'nodes': Node.objects.all().order_by('-key'),
+            'projects_list': projects_list,
+            'domain_name_list': domain_name_list,
+            'types': Project.TYPE_CHOICES,
+            'envs': Asset.ENV_CHOICES,
         }
         kwargs.update(context)
         return super().get_context_data(**kwargs)

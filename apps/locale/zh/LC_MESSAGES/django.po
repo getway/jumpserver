@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jumpserver 0.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-15 10:43+0800\n"
+"POT-Creation-Date: 2019-08-16 10:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ibuler <ibuler@qq.com>\n"
 "Language-Team: Jumpserver team<ibuler@qq.com>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: assets/api/asset.py:112
+#: assets/api/asset.py:165
 msgid "Please select assets that need to be updated"
 msgstr "请选择需要更新的资产"
 
@@ -49,7 +49,6 @@ msgstr "管理用户"
 #: assets/forms/asset.py:33 assets/forms/asset.py:69 assets/forms/asset.py:109
 #: assets/templates/assets/asset_create.html:36
 #: assets/templates/assets/asset_create.html:38
-#: assets/templates/assets/asset_list.html:81
 #: assets/templates/assets/asset_update.html:41
 #: assets/templates/assets/asset_update.html:43
 #: assets/templates/assets/user_asset_list.html:33
@@ -282,9 +281,9 @@ msgstr "使用逗号分隔多个命令，如: /bin/whoami,/sbin/ifconfig"
 #: assets/templates/assets/_asset_list_modal.html:46
 #: assets/templates/assets/admin_user_assets.html:49
 #: assets/templates/assets/asset_detail.html:64
-#: assets/templates/assets/asset_list.html:93
+#: assets/templates/assets/asset_list.html:154
 #: assets/templates/assets/domain_gateway_list.html:68
-#: assets/templates/assets/project_assets.html:52
+#: assets/templates/assets/project_assets.html:49
 #: assets/templates/assets/system_user_asset.html:51
 #: assets/templates/assets/user_asset_list.html:45
 #: assets/templates/assets/user_asset_list.html:163
@@ -299,8 +298,8 @@ msgstr "IP"
 #: assets/templates/assets/_asset_user_auth_modal.html:9
 #: assets/templates/assets/admin_user_assets.html:48
 #: assets/templates/assets/asset_detail.html:60
-#: assets/templates/assets/asset_list.html:92
-#: assets/templates/assets/project_assets.html:51
+#: assets/templates/assets/asset_list.html:153
+#: assets/templates/assets/project_assets.html:48
 #: assets/templates/assets/system_user_asset.html:50
 #: assets/templates/assets/user_asset_list.html:44
 #: assets/templates/assets/user_asset_list.html:162
@@ -484,8 +483,8 @@ msgstr "不可达"
 #: assets/templates/assets/admin_user_assets.html:51
 #: assets/templates/assets/admin_user_list.html:29
 #: assets/templates/assets/asset_asset_user_list.html:50
-#: assets/templates/assets/asset_list.html:95
-#: assets/templates/assets/project_assets.html:55
+#: assets/templates/assets/asset_list.html:158
+#: assets/templates/assets/project_assets.html:52
 #: assets/templates/assets/system_user_asset.html:53
 #: assets/templates/assets/system_user_list.html:34
 #: users/templates/users/user_group_granted_asset.html:47
@@ -498,9 +497,10 @@ msgid "Unknown"
 msgstr "未知"
 
 #: assets/models/asset.py:133 assets/templates/assets/asset_detail.html:72
-#: assets/templates/assets/project_assets.html:53
-#: assets/templates/assets/project_values.html:52
-#: assets/templates/assets/project_values.html:65
+#: assets/templates/assets/asset_list.html:155
+#: assets/templates/assets/project_assets.html:50
+#: assets/templates/assets/project_values.html:49
+#: assets/templates/assets/project_values.html:62
 msgid "Environment"
 msgstr "环境"
 
@@ -646,13 +646,13 @@ msgstr "每行一个命令"
 #: assets/templates/assets/admin_user_assets.html:52
 #: assets/templates/assets/admin_user_list.html:33
 #: assets/templates/assets/asset_asset_user_list.html:52
-#: assets/templates/assets/asset_list.html:96
+#: assets/templates/assets/asset_list.html:159
 #: assets/templates/assets/cmd_filter_list.html:28
 #: assets/templates/assets/cmd_filter_rule_list.html:63
 #: assets/templates/assets/domain_gateway_list.html:73
 #: assets/templates/assets/domain_list.html:29
 #: assets/templates/assets/label_list.html:17
-#: assets/templates/assets/project_assets.html:56
+#: assets/templates/assets/project_assets.html:53
 #: assets/templates/assets/project_list.html:35
 #: assets/templates/assets/system_user_asset.html:54
 #: assets/templates/assets/system_user_list.html:38
@@ -719,7 +719,7 @@ msgstr "用户"
 
 #: assets/models/label.py:19 assets/models/node.py:21
 #: assets/templates/assets/label_list.html:15
-#: assets/templates/assets/project_values.html:64 settings/models.py:30
+#: assets/templates/assets/project_values.html:61 settings/models.py:30
 msgid "Value"
 msgstr "值"
 
@@ -779,9 +779,9 @@ msgstr "手动登录"
 #: assets/templates/assets/system_user_detail.html:22
 #: assets/views/admin_user.py:29 assets/views/admin_user.py:47
 #: assets/views/admin_user.py:63 assets/views/admin_user.py:78
-#: assets/views/admin_user.py:102 assets/views/asset.py:51
-#: assets/views/asset.py:67 assets/views/asset.py:104 assets/views/asset.py:145
-#: assets/views/asset.py:162 assets/views/asset.py:187
+#: assets/views/admin_user.py:102 assets/views/asset.py:55
+#: assets/views/asset.py:75 assets/views/asset.py:112 assets/views/asset.py:153
+#: assets/views/asset.py:170 assets/views/asset.py:195
 #: assets/views/cmd_filter.py:30 assets/views/cmd_filter.py:46
 #: assets/views/cmd_filter.py:62 assets/views/cmd_filter.py:78
 #: assets/views/cmd_filter.py:97 assets/views/cmd_filter.py:130
@@ -969,7 +969,7 @@ msgstr "资产csv文件"
 msgid "If set id, will use this id update asset existed"
 msgstr "如果设置了id，则会使用该行信息更新该id的资产"
 
-#: assets/templates/assets/_asset_list_modal.html:7 assets/views/asset.py:52
+#: assets/templates/assets/_asset_list_modal.html:7 assets/views/asset.py:56
 #: templates/_nav.html:22
 msgid "Asset list"
 msgstr "资产列表"
@@ -1091,7 +1091,7 @@ msgstr "重置"
 #: assets/templates/assets/admin_user_create_update.html:46
 #: assets/templates/assets/asset_bulk_update.html:24
 #: assets/templates/assets/asset_create.html:68
-#: assets/templates/assets/asset_list.html:113
+#: assets/templates/assets/asset_list.html:176
 #: assets/templates/assets/asset_update.html:72
 #: assets/templates/assets/cmd_filter_create_update.html:16
 #: assets/templates/assets/cmd_filter_rule_create_update.html:41
@@ -1123,7 +1123,7 @@ msgstr "提交"
 
 #: assets/templates/assets/_user_asset_detail_modal.html:11
 #: assets/templates/assets/asset_asset_user_list.html:17
-#: assets/templates/assets/asset_detail.html:20 assets/views/asset.py:188
+#: assets/templates/assets/asset_detail.html:20 assets/views/asset.py:196
 msgid "Asset detail"
 msgstr "资产详情"
 
@@ -1159,7 +1159,7 @@ msgid "Assets list"
 msgstr "资产列表"
 
 #: assets/templates/assets/admin_user_assets.html:29
-#: assets/templates/assets/project_assets.html:32
+#: assets/templates/assets/project_assets.html:29
 #: perms/templates/perms/asset_permission_asset.html:35
 msgid "Asset list of "
 msgstr "资产列表"
@@ -1182,7 +1182,7 @@ msgstr "测试可连接性"
 #: assets/templates/assets/asset_asset_user_list.html:74
 #: assets/templates/assets/asset_asset_user_list.html:122
 #: assets/templates/assets/asset_detail.html:186
-#: assets/templates/assets/project_assets.html:94
+#: assets/templates/assets/project_assets.html:91
 #: assets/templates/assets/system_user_asset.html:75
 #: assets/templates/assets/system_user_asset.html:165
 #: assets/templates/assets/system_user_detail.html:151
@@ -1213,7 +1213,7 @@ msgstr "更新失败"
 #: assets/templates/assets/admin_user_detail.html:24
 #: assets/templates/assets/admin_user_list.html:88
 #: assets/templates/assets/asset_detail.html:27
-#: assets/templates/assets/asset_list.html:178
+#: assets/templates/assets/asset_list.html:405
 #: assets/templates/assets/cmd_filter_detail.html:29
 #: assets/templates/assets/cmd_filter_list.html:58
 #: assets/templates/assets/cmd_filter_rule_list.html:86
@@ -1245,7 +1245,7 @@ msgstr "更新"
 #: assets/templates/assets/admin_user_detail.html:28
 #: assets/templates/assets/admin_user_list.html:89
 #: assets/templates/assets/asset_detail.html:31
-#: assets/templates/assets/asset_list.html:179
+#: assets/templates/assets/asset_list.html:406
 #: assets/templates/assets/cmd_filter_detail.html:33
 #: assets/templates/assets/cmd_filter_list.html:59
 #: assets/templates/assets/cmd_filter_rule_list.html:87
@@ -1283,7 +1283,7 @@ msgstr "选择节点"
 #: assets/templates/assets/admin_user_detail.html:100
 #: assets/templates/assets/asset_detail.html:215
 #: assets/templates/assets/asset_detail.html:252
-#: assets/templates/assets/asset_list.html:637
+#: assets/templates/assets/asset_list.html:873
 #: assets/templates/assets/cmd_filter_detail.html:106
 #: assets/templates/assets/project_detail.html:155
 #: assets/templates/assets/system_user_asset.html:112
@@ -1332,7 +1332,7 @@ msgid "Ratio"
 msgstr "比例"
 
 #: assets/templates/assets/asset_asset_user_list.html:20
-#: assets/templates/assets/asset_detail.html:23 assets/views/asset.py:68
+#: assets/templates/assets/asset_detail.html:23 assets/views/asset.py:76
 msgid "Asset user list"
 msgstr "资产用户列表"
 
@@ -1421,114 +1421,132 @@ msgstr ""
 "左侧是资产树，右击可以新建、删除、更改树节点，授权资产也是以节点方式组织的，"
 "右侧是属于该节点下的资产"
 
-#: assets/templates/assets/asset_list.html:69 assets/views/asset.py:105
-msgid "Create asset"
-msgstr "创建资产"
-
-#: assets/templates/assets/asset_list.html:73
+#: assets/templates/assets/asset_list.html:98
 #: assets/templates/assets/project_list.html:11
 #: settings/templates/settings/_ldap_list_users_modal.html:97
 #: users/templates/users/user_list.html:7
 msgid "Import"
 msgstr "导入"
 
-#: assets/templates/assets/asset_list.html:76
+#: assets/templates/assets/asset_list.html:101
 #: assets/templates/assets/project_list.html:14
 #: audits/templates/audits/login_log_list.html:85
 #: users/templates/users/user_list.html:10
 msgid "Export"
 msgstr "导出"
 
-#: assets/templates/assets/asset_list.html:94
-#: assets/templates/assets/project_assets.html:54
+#: assets/templates/assets/asset_list.html:133
+msgid "搜索"
+msgstr ""
+
+#: assets/templates/assets/asset_list.html:134 audits/models.py:32
+msgid "Create"
+msgstr "创建"
+
+#: assets/templates/assets/asset_list.html:147 assets/views/asset.py:113
+msgid "Create asset"
+msgstr "创建资产"
+
+#: assets/templates/assets/asset_list.html:156
+#: assets/templates/assets/project_assets.html:51
 msgid "Hardware"
 msgstr "硬件"
 
-#: assets/templates/assets/asset_list.html:105
+#: assets/templates/assets/asset_list.html:157
+msgid "ProjectAmount"
+msgstr "项目数量"
+
+#: assets/templates/assets/asset_list.html:168
 #: users/templates/users/user_list.html:38
 msgid "Delete selected"
 msgstr "批量删除"
 
-#: assets/templates/assets/asset_list.html:106
+#: assets/templates/assets/asset_list.html:169
 #: users/templates/users/user_list.html:39
 msgid "Update selected"
 msgstr "批量更新"
 
-#: assets/templates/assets/asset_list.html:107
+#: assets/templates/assets/asset_list.html:170
 msgid "Remove from this node"
 msgstr "从节点移除"
 
-#: assets/templates/assets/asset_list.html:108
+#: assets/templates/assets/asset_list.html:171
 #: users/templates/users/user_list.html:40
 msgid "Deactive selected"
 msgstr "禁用所选"
 
-#: assets/templates/assets/asset_list.html:109
+#: assets/templates/assets/asset_list.html:172
 #: users/templates/users/user_list.html:41
 msgid "Active selected"
 msgstr "激活所选"
 
-#: assets/templates/assets/asset_list.html:126
+#: assets/templates/assets/asset_list.html:189
 msgid "Add node"
 msgstr "新建节点"
 
-#: assets/templates/assets/asset_list.html:127
+#: assets/templates/assets/asset_list.html:190
 msgid "Rename node"
 msgstr "重命名节点"
 
-#: assets/templates/assets/asset_list.html:128
+#: assets/templates/assets/asset_list.html:191
 msgid "Delete node"
 msgstr "删除节点"
 
-#: assets/templates/assets/asset_list.html:130
+#: assets/templates/assets/asset_list.html:193
 msgid "Add assets to node"
 msgstr "添加资产到节点"
 
-#: assets/templates/assets/asset_list.html:131
+#: assets/templates/assets/asset_list.html:194
 msgid "Move assets to node"
 msgstr "移动资产到节点"
 
-#: assets/templates/assets/asset_list.html:133
+#: assets/templates/assets/asset_list.html:196
 msgid "Refresh node hardware info"
 msgstr "更新节点资产硬件信息"
 
-#: assets/templates/assets/asset_list.html:134
+#: assets/templates/assets/asset_list.html:197
 msgid "Test node connective"
 msgstr "测试节点资产可连接性"
 
-#: assets/templates/assets/asset_list.html:136
+#: assets/templates/assets/asset_list.html:199
 msgid "Refresh all node assets amount"
 msgstr "刷新所有节点资产数量"
 
-#: assets/templates/assets/asset_list.html:138
+#: assets/templates/assets/asset_list.html:201
 msgid "Display only current node assets"
 msgstr "仅显示当前节点资产"
 
-#: assets/templates/assets/asset_list.html:139
+#: assets/templates/assets/asset_list.html:202
 msgid "Displays all child node assets"
 msgstr "显示所有子节点资产"
 
-#: assets/templates/assets/asset_list.html:217
+#: assets/templates/assets/asset_list.html:407
+#: assets/templates/assets/project_assets.html:93
+#: assets/templates/assets/user_asset_list.html:100 perms/const.py:19
+msgid "Connect"
+msgstr "连接"
+
+#: assets/templates/assets/asset_list.html:446
 msgid "Create node failed"
 msgstr "创建节点失败"
 
-#: assets/templates/assets/asset_list.html:229
+#: assets/templates/assets/asset_list.html:458
 msgid "Have child node, cancel"
 msgstr "存在子节点，不能删除"
 
-#: assets/templates/assets/asset_list.html:231
+#: assets/templates/assets/asset_list.html:460
 msgid "Have assets, cancel"
 msgstr "存在资产，不能删除"
 
-#: assets/templates/assets/asset_list.html:302
+#: assets/templates/assets/asset_list.html:531
 msgid "Rename success"
 msgstr "重命名成功"
 
-#: assets/templates/assets/asset_list.html:303
+#: assets/templates/assets/asset_list.html:532
 msgid "Rename failed, do not change the root node name"
 msgstr "重命名失败，不能更改root节点的名称"
 
-#: assets/templates/assets/asset_list.html:631
+#: assets/templates/assets/asset_list.html:867
 #: assets/templates/assets/system_user_list.html:138
 #: users/templates/users/user_detail.html:382
 #: users/templates/users/user_detail.html:408
@@ -1538,11 +1556,11 @@ msgstr "重命名失败，不能更改root节点的名称"
 msgid "Are you sure?"
 msgstr "你确认吗?"
 
-#: assets/templates/assets/asset_list.html:632
+#: assets/templates/assets/asset_list.html:868
 msgid "This will delete the selected assets !!!"
 msgstr "删除选择资产"
 
-#: assets/templates/assets/asset_list.html:635
+#: assets/templates/assets/asset_list.html:871
 #: assets/templates/assets/system_user_list.html:142
 #: settings/templates/settings/terminal_setting.html:163
 #: users/templates/users/user_detail.html:386
@@ -1554,16 +1572,16 @@ msgstr "删除选择资产"
 msgid "Cancel"
 msgstr "取消"
 
-#: assets/templates/assets/asset_list.html:641
+#: assets/templates/assets/asset_list.html:877
 msgid "Asset Deleted."
 msgstr "已被删除"
 
-#: assets/templates/assets/asset_list.html:642
-#: assets/templates/assets/asset_list.html:647
+#: assets/templates/assets/asset_list.html:878
+#: assets/templates/assets/asset_list.html:883
 msgid "Asset Delete"
 msgstr "删除"
 
-#: assets/templates/assets/asset_list.html:646
+#: assets/templates/assets/asset_list.html:882
 msgid "Asset Deleting failed."
 msgstr "删除失败"
 
@@ -1686,18 +1704,6 @@ msgstr "创建标签"
 msgid "Project Detail"
 msgstr "项目详情"
 
-#: assets/templates/assets/project_assets.html:24
-#: assets/templates/assets/project_values.html:24
-#, fuzzy
-#| msgid "Org list"
-msgid "Var list"
-msgstr "组织列表"
-
-#: assets/templates/assets/project_assets.html:96
-#: assets/templates/assets/user_asset_list.html:100 perms/const.py:19
-msgid "Connect"
-msgstr "连接"
-
 #: assets/templates/assets/project_create.html:25 templates/_nav.html:10
 #: users/views/group.py:27 users/views/group.py:43 users/views/group.py:59
 #: users/views/group.py:75 users/views/group.py:91 users/views/login.py:154
@@ -1759,15 +1765,15 @@ msgstr "移除"
 msgid "Create project"
 msgstr "创建项目"
 
-#: assets/templates/assets/project_values.html:32
+#: assets/templates/assets/project_values.html:29
 msgid "Var list of "
 msgstr "var列表"
 
-#: assets/templates/assets/project_values.html:63
+#: assets/templates/assets/project_values.html:60
 msgid "key"
 msgstr "key"
 
-#: assets/templates/assets/project_values.html:66
+#: assets/templates/assets/project_values.html:63
 msgid "Project"
 msgstr "项目"
 
@@ -1871,23 +1877,23 @@ msgstr "更新管理用户"
 msgid "Admin user detail"
 msgstr "管理用户详情"
 
-#: assets/views/asset.py:79 templates/_nav_user.html:4
+#: assets/views/asset.py:87 templates/_nav_user.html:4
 msgid "My assets"
 msgstr "我的资产"
 
-#: assets/views/asset.py:119
+#: assets/views/asset.py:127
 msgid "Bulk update asset success"
 msgstr "批量更新资产成功"
 
-#: assets/views/asset.py:146
+#: assets/views/asset.py:154
 msgid "Bulk update asset"
 msgstr "批量更新资产"
 
-#: assets/views/asset.py:163
+#: assets/views/asset.py:171
 msgid "Update asset"
 msgstr "更新资产"
 
-#: assets/views/asset.py:308
+#: assets/views/asset.py:316
 msgid "already exists"
 msgstr "已经存在"
 
@@ -2005,10 +2011,6 @@ msgstr "文件名"
 #: users/templates/users/user_detail.html:458
 msgid "Success"
 msgstr "成功"
-
-#: audits/models.py:32
-msgid "Create"
-msgstr "创建"
 
 #: audits/models.py:39 audits/templates/audits/operate_log_list.html:49
 #: audits/templates/audits/operate_log_list.html:68
@@ -4836,6 +4838,11 @@ msgstr "MFA 解绑成功"
 #: users/views/user.py:600
 msgid "MFA disable success, return login page"
 msgstr "MFA 解绑成功，返回登录页面"
+
+#, fuzzy
+#~| msgid "Org list"
+#~ msgid "Var list"
+#~ msgstr "组织列表"
 
 #~ msgid "Password length"
 #~ msgstr "密码长度"

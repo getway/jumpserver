@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block custom_head_css_js %}
+    <link href="{% static 'css/plugins/select2/select2.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/plugins/select2/select2.full.min.js' %}"></script>
     <link href="{% static 'css/plugins/ztree/awesomeStyle/awesome.css' %}" rel="stylesheet">
 {#    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">#}
     <script type="text/javascript" src="{% static 'js/plugins/ztree/jquery.ztree.all.min.js' %}"></script>
@@ -48,7 +50,7 @@
 {% block content %}
 <div class="wrapper wrapper-content">
    <div class="row">
-       <div class="col-lg-3" id="split-left" style="padding-left: 3px">
+       <div class="col-lg-2" id="split-left" style="padding-left: 3px">
            <div class="ibox float-e-margins">
                <div class="ibox-content mailbox-content" style="padding-top: 0;padding-left: 1px">
                    <div class="file-manager ">
@@ -59,7 +61,83 @@
                </div>
            </div>
        </div>
-       <div class="col-lg-9 animated fadeInRight" id="split-right">
+       <div class="col-lg-10 animated fadeInRight" id="split-right">
+           <div class="panel-heading">
+               <h3 class="panel-title">资产高级搜索</h3>
+           </div>
+           <div class="panel-body">
+               <table class="center-block">
+               <tr>
+                 <td class="col-xs-2">
+                 <select class="form-control" title="" id="id_project">
+                    <option value="" ></option>
+                </select>
+                </td>
+
+             <td class="col-xs-2">
+                 {# <label class="control-label" for="id_type">类型</label> #}
+                 <select name="type" class="form-control" title="" id="id_type">
+                    <option value="" >-类型-</option>
+                     {% for type_1,type_2 in types %}
+                    <option value="{{ type_1 }}" >{{ type_2 }}</option>
+                    {% endfor %}
+                </select>
+             </td>
+
+               <td class="col-xs-2">
+                 <select name="groups" class="form-control" title="" id="id_domain">
+                    <option value="" >-网域-</option>
+                </select>
+               </td>
+              <td class="col-xs-2">
+                {# <label for="id_comment" class="sr-only">备注</label> #}
+                 <input type="text" placeholder="备注" id="id_comment" class="form-control">
+              </td>
+               <td class="col-xs-2">
+                       <button class="btn btn-sm btn_import" data-toggle="modal" data-target="#asset_import_modal" tabindex="0">
+                           {% trans "Import" %}
+                       </button>
+                       <button class="btn btn-sm btn_export" tabindex="0">
+                           {% trans "Export" %}
+                       </button>
+               </td>
+            </tr>
+             <tr>
+
+                 <td class="col-xs-2">
+                   <select name="domain_name" class="form-control" title="" id="id_domain_name">
+                    <option value="" ></option>
+                   </select>
+                  </td>
+
+                 <td class="col-xs-2">
+                 {# <label class="control-label" for="id_env">环境</label> #}
+                 <select name="env" class="form-control" title="" id="id_env">
+                    <option value="" >-环境-</option>
+                     {% for env_1,env_2 in envs %}
+                    <option value="{{ env_1 }}" >{{ env_2 }}</option>
+                    {% endfor %}
+                </select>
+                 </td>
+
+                   <td class="col-xs-2">
+                     <label for="id_ip" class="sr-only">IP</label>
+                     <input type="text" placeholder="IP" id="id_ip" class="form-control">
+                  </td>
+                 <td class="col-xs-2">
+                     <label for="id_hostname" class="sr-only">主机名</label>
+                     <input type="text" placeholder="Hostname" id="id_hostname" class="form-control">
+                 </td>
+
+                  <td class="col-xs-2">
+                     <button id="submit_button" class="btn btn-sm btn-primary" type="submit">{% trans '搜索' %}</button>
+                     <button class="btn btn-sm btn-primary btn-create-asset" tabindex="0">{% trans "Create" %}</button>
+                  </td>
+             </tr>
+            </table>
+            </div>
+
+
            <div class="tree-toggle">
                <div class="btn btn-sm btn-primary tree-toggle-btn" onclick="toggle()">
                    <i class="fa fa-angle-left fa-x" id="toggle-icon"></i>
@@ -67,31 +145,16 @@
            </div>
            <div class="mail-box-header">
                <div class="uc pull-left m-r-5"><a class="btn btn-sm btn-primary btn-create-asset"> {% trans "Create asset" %} </a></div>
-               <div class="html5buttons">
-                   <div class="dt-buttons btn-group">
-                       <a class="btn btn-default btn_import" data-toggle="modal" data-target="#asset_import_modal" tabindex="0">
-                           <span>{% trans "Import" %}</span>
-                       </a>
-                       <a class="btn btn-default btn_export" tabindex="0">
-                           <span>{% trans "Export" %}</span>
-                       </a>
-                   </div>
-               </div>
-               <div class="btn-group" style="float: right">
-                  <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">{% trans 'Label' %} <span class="caret"></span></button>
-                  <ul class="dropdown-menu labels">
-                      {% for label in labels %}
-                          <li><a style="font-weight: bolder">{{ label.name }}:{{ label.value }}</a></li>
-                      {% endfor %}
-                  </ul>
-               </div>
+
                <table class="table table-striped table-bordered table-hover " id="asset_list_table" style="width: 100%">
                    <thead>
                        <tr>
                            <th class="text-center"><input type="checkbox" class="ipt_check_all"></th>
                            <th class="text-center">{% trans 'Hostname' %}</th>
                            <th class="text-center">{% trans 'IP' %}</th>
+                           <th class="text-center">{% trans 'Environment' %}</th>
                            <th class="text-center">{% trans 'Hardware' %}</th>
+                           <th class="text-center">{% trans 'ProjectAmount' %}</th>
                            <th class="text-center">{% trans 'Reachable' %}</th>
                            <th class="text-center">{% trans 'Action' %}</th>
                        </tr>
@@ -151,20 +214,185 @@ var zTree, rMenu, asset_table, show = 0;
 var update_node_action = "";
 var current_node_id = null;
 var current_node = null;
+
+//本地数据获取
+$("#id_project").select2({
+       data: {{ projects_list | safe  }},
+       width: "100%",
+       placeholder:'选择项目',
+       allowClear:true,
+       maximumSelectionLength: 2,
+});
+
+$("#id_domain_name").select2({
+       width: "100%",
+       data: {{ domain_name_list | safe  }},
+       placeholder:'选择域名',
+       allowClear:true,
+       maximumSelectionLength: 2,
+});
+
+initServerSideDataTable = function (options) {
+  var ele = options.ele || $('.dataTable');
+  var columnDefs = [
+      {
+          targets: 0,
+          orderable: false,
+          createdCell: function (td, cellData) {
+              $(td).html('<input type="checkbox" class="text-center ipt_check" id=99991937>'.replace('99991937', cellData));
+          }
+      },
+      {className: 'text-center', targets: '_all'}
+  ];
+  columnDefs = options.columnDefs ? options.columnDefs.concat(columnDefs) : columnDefs;
+  var select = {
+            style: 'multi',
+            selector: 'td:first-child'
+      };
+  // var param = userManage.getQueryCondition(data);
+  var table = ele.DataTable({
+        pageLength: options.pageLength || 15,
+        dom: options.dom || '<"#uc.pull-left">fltr<"row m-t"<"col-md-8"<"#op.col-md-6"><"col-md-6 text-center"i>><"col-md-4"p>>',
+        order: options.order || [],
+        buttons: [],
+        columnDefs: columnDefs,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ajax: { //手动调用异步查询
+            url: options.ajax_url,
+		    data: function (data) { //封装请求参数
+		        var fuzzySearch = false;
+                var param = {};
+                //组装排序参数
+                if (data.order&&data.order.length&&data.order[0]) {
+                    switch (data.order[0].column) {
+                    case 1:
+                        param.order = "hostname";
+                        break;
+                    case 2:
+                        param.order = "ip";
+                        break;
+                    case 3:
+                        param.order = "environment";
+                        break;
+                    case 5:
+                        param.order = "projects_amount";
+                        break;
+                    default:
+                        param.order = "hostname";
+                        break;
+                    }
+                    param.orderDir = data.order[0].dir;
+                }
+                //组装查询参数
+                if (fuzzySearch) {
+                    param.fuzzy = $("#fuzzy-search").val();
+                }else{
+                    param.hostname = $("#id_hostname").val();
+                    param.ip = $("#id_ip").val();
+                    param.type = $("#id_type").val();
+                    param.environment = $("#id_env").val();
+                    param.domain = $("#id_domain").val();
+                    param.domain_name = $("#id_domain_name").val();
+                    param.project = $("#id_project").val();
+                    param.role = $("#role-search").val();
+                }
+                //组装分页参数
+                param.offset = data.start;
+                param.limit = data.length;
+
+                return param;
+            },
+            dataFilter: function(data){
+                var json = jQuery.parseJSON( data );
+                json.recordsTotal = json.count;
+                json.recordsFiltered = json.count;
+                return JSON.stringify(json); // return JSON string
+            },
+            dataSrc: "results"
+		},
+        columns: options.columns || [],
+        select: options.select || select,
+        language: jumpserver.language,
+        lengthMenu: [[15, 25, 50, 9999], [15, 25, 50, 'All']]
+    });
+    table.selected = [];
+    table.selected_rows = [];
+    table.on('select', function(e, dt, type, indexes) {
+        var $node = table[ type ]( indexes ).nodes().to$();
+        $node.find('input.ipt_check').prop('checked', true);
+        jumpserver.selected[$node.find('input.ipt_check').prop('id')] = true;
+        if (type === 'row') {
+            var rows = table.rows(indexes).data();
+            $.each(rows, function (id, row) {
+                table.selected_rows.push(row);
+                if (row.id && $.inArray(row.id, table.selected) === -1){
+                    table.selected.push(row.id)
+                }
+            })
+        }
+    }).on('deselect', function(e, dt, type, indexes) {
+        var $node = table[ type ]( indexes ).nodes().to$();
+        $node.find('input.ipt_check').prop('checked', false);
+        jumpserver.selected[$node.find('input.ipt_check').prop('id')] = false;
+        if (type === 'row') {
+            var rows = table.rows(indexes).data();
+            $.each(rows, function (id, row) {
+                if (row.id){
+                    var index = table.selected.indexOf(row.id);
+                    if (index > -1){
+                        table.selected.splice(index, 1)
+                    }
+                }
+            })
+        }
+    }).on('draw', function(){
+        $('#op').html(options.op_html || '');
+        $('#uc').html(options.uc_html || '');
+        var table_data = [];
+        $.each(table.rows().data(), function (id, row) {
+            if (row.id) {
+                table_data.push(row.id)
+            }
+        });
+
+        $.each(table.selected, function (id, data) {
+            var index = table_data.indexOf(data);
+            if (index > -1){
+                table.rows(index).select()
+            }
+        });
+    });
+    var table_id = table.settings()[0].sTableId;
+    $('#' + table_id + ' .ipt_check_all').on('click', function() {
+        if ($(this).prop("checked")) {
+            $(this).closest('table').find('.ipt_check').prop('checked', true);
+            table.rows({search:'applied', page:'current'}).select();
+        } else {
+            $(this).closest('table').find('.ipt_check').prop('checked', false);
+            table.rows({search:'applied', page:'current'}).deselect();
+        }
+    });
+
+    // jumpserver.table = table;
+    return table;
+};
+
+
 function initTable() {
     var options = {
         ele: $('#asset_list_table'),
         columnDefs: [
             {targets: 1, createdCell: function (td, cellData, rowData) {
-                cellData = htmlEscape(cellData);
                 {% url 'assets:asset-detail' pk=DEFAULT_PK as the_url  %}
                 var detail_btn = '<a href="{{ the_url }}">' + cellData + '</a>';
                 $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', rowData.id));
             }},
-            {targets: 3, createdCell: function (td, cellData, rowData) {
+            {targets: 4, createdCell: function (td, cellData, rowData) {
                 $(td).html(rowData.hardware_info)
             }},
-            {targets: 4, createdCell: function (td, cellData) {
+            {targets: 6, createdCell: function (td, cellData) {
                 if (cellData === 1){
                     $(td).html('<i class="fa fa-circle text-navy"></i>')
                 } else if (cellData === 0) {
@@ -173,24 +401,25 @@ function initTable() {
                     $(td).html('<i class="fa fa-circle text-warning"></i>')
                 }
             }},
-
-            {targets: 5, createdCell: function (td, cellData, rowData) {
-                var update_btn = '<a href="{% url "assets:asset-update" pk=DEFAULT_PK %}" class="btn btn-xs btn-info">{% trans "Update" %}</a>'.replace("{{ DEFAULT_PK }}", cellData);
+            {targets: 7, createdCell: function (td, cellData, rowData) {
+                var update_btn = '<a href="{% url "assets:asset-update" pk=DEFAULT_PK %}" class="btn btn-xs btn-info m-l-xs">{% trans "Update" %}</a>'.replace("{{ DEFAULT_PK }}", cellData);
                 var del_btn = '<a class="btn btn-xs btn-danger m-l-xs btn_asset_delete" data-uid="{{ DEFAULT_PK }}">{% trans "Delete" %}</a>'.replace('{{ DEFAULT_PK }}', cellData);
-                $(td).html(update_btn + del_btn)
+                var conn_btn = '<a href="{% url "luna-view" %}?login_to=' +  cellData +'" class="btn btn-xs btn-primary" target="_Blank">{% trans "Connect" %}</a>'.replace("{{ DEFAULT_PK }}", cellData);
+                $(td).html(conn_btn + update_btn + del_btn)
             }}
         ],
         ajax_url: '{% url "api-assets:asset-list" %}',
         columns: [
-            {data: "id"}, {data: "hostname" }, {data: "ip" },
-            {data: "cpu_cores", orderable: false},
+            {data: "id"}, {data: "hostname" }, {data: "ip" }, {data: "environment"},
+            {data: "cpu_cores", orderable: false}, {data: "projects_amount", orderable: false},
             {data: "connectivity", orderable: false}, {data: "id", orderable: false }
         ],
         op_html: $('#actions').html()
     };
-    asset_table = jumpserver.initServerSideDataTable(options);
+    asset_table = initServerSideDataTable(options);
     return asset_table
 }
+
 
 function addTreeNode() {
 	hideRMenu();
@@ -441,7 +670,14 @@ function toggle() {
 }
 
 $(document).ready(function(){
-    initTable();
+    var table = initTable();
+
+    // 高级搜索
+    $("#submit_button").click(function(){
+		fuzzySearch = false;
+		table.draw();
+	});
+
     initTree();
 
     if(getCookie('show_current_asset') === '1'){
